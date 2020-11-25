@@ -1,47 +1,43 @@
+/* eslint-disable func-names */
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import TasksPage from "./components/TaskPage";
 import Modal from "./shared/modal";
 import "./App.css";
-const mockTasks = [
-  {
-    id: 1,
-    title: "Learn Redux",
-    description: "The store, actions, and reducers, oh my!",
-    status: "Unstarted",
-  },
-  {
-    id: 2,
-    title: "Peace on Earth",
-    description: "No big deal.",
-    status: "In Progress",
-  },
+import { createTask, updateTask } from "./actions";
 
-  {
-    id: 6,
-    title: "Peace on Earth",
-    description: "No big deal.",
-    status: "In Progress",
-  },
-  {
-    id: 3,
-    title: "Learn Redux",
-    description: "The store, actions, and reducers, oh my!",
-    status: "Completed",
-  },
-];
-
-const App = function () {
+function mapStateToProps(state) {
+  return {
+    tasks: state.tasks,
+  };
+}
+const App = function ({ tasks, dispatch }) {
   const [showModal, setShowModal] = useState(false);
 
+  const onUpdateTask = ({ id, status }) =>
+    dispatch(updateTask({id, status}));
+  const onCreateTask = ({ title, description }) => {
+    dispatch(createTask({ title, description }));
+  };
+
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <div className="main-content">
       {showModal && <Modal />}
       <div className="add-task">
-        <button onClick={()=> setShowModal(prev => !prev)}> TASK + </button>
+        <button type="button" onClick={() => setShowModal((prev) => !prev)}>
+          {" "}
+          TASK +{" "}
+        </button>
       </div>
-      <TasksPage tasks={mockTasks} />
+      <TasksPage
+        tasks={tasks}
+        onUpdateTask={onUpdateTask}
+        onCreateTask={onCreateTask}
+      />
     </div>
   );
 };
 
-export default App;
+// eslint-disable-next-line no-undef
+export default connect(mapStateToProps)(App);
