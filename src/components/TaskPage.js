@@ -10,7 +10,7 @@ const TasksPage = ({ tasks, onCreateTask, onUpdateTask }) => {
     description: "",
   });
   const renderTaskLists = () => {
-    return TASK_STATUSES.map((status) => {
+    return TASK_STATUSES.map((status, index) => {
       const statusTasks = tasks.filter((task) => task.status === status);
       return (
         <TaskList

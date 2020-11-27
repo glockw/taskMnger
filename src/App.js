@@ -1,10 +1,10 @@
 /* eslint-disable func-names */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import TasksPage from "./components/TaskPage";
 import Modal from "./shared/modal";
 import "./App.css";
-import { createTask, updateTask } from "./actions";
+import { createTask, updateTask, fetchTasks, editTask } from "./actions";
 
 function mapStateToProps(state) {
   return {
@@ -14,8 +14,13 @@ function mapStateToProps(state) {
 const App = function ({ tasks, dispatch }) {
   const [showModal, setShowModal] = useState(false);
 
-  const onUpdateTask = ({ id, status }) =>
-    dispatch(updateTask({id, status}));
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, []);
+  const onUpdateTask = (task) => {
+    const { id, ...params } = task;
+    dispatch(editTask(id, params));
+  };
   const onCreateTask = ({ title, description }) => {
     dispatch(createTask({ title, description }));
   };

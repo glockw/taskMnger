@@ -9,8 +9,8 @@ const Task = ({ task: { id, title, description, status }, onUpdateTask }) => {
       <div className="task-header">
         <h3>{title}</h3>
         <select name="" value={status} onChange={onSelectHandle} id="">
-          {TASK_STATUSES.map((status) => (
-            <option value={status}>{status} </option>
+          {TASK_STATUSES.map((status, index) => (
+            <option key={index} value={status}>{status} </option>
           ))}
         </select>
       </div>
