@@ -1,9 +1,20 @@
-import { uniqueId } from "../actions";
-
-export default function tasks(state = { tasks: [] }, action) {
+const intitialState = {
+  isLoading: false,
+  tasks: [],
+  error: null,
+};
+export default function tasks(state = intitialState, action) {
   switch (action.type) {
+    case "FETCH_TASKS_STARTED": {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case "EDIT_TASK_STARTED":
+      return { ...state, isLoading: true };
     case "FETCH_TASKS_SUCCEEDED":
-      return { ...state, tasks: [...action.payload.tasks] };
+      return { ...state, isLoading: false, tasks: [...action.payload] };
     case "EDIT_TASK_SUCCEEDED":
       return {
         tasks: state.tasks.map((task) =>
@@ -12,17 +23,19 @@ export default function tasks(state = { tasks: [] }, action) {
       };
 
     case "CREATE_TASK_SUCCEEDED":
-      return { tasks: state.tasks.concat(action.payload.task) };
+      return { tasks: state.tasks.concat(action.payload) };
     case "CREATE_TASK":
       return { tasks: state.tasks.concat(action.payload) };
-    case "UPDATE_TASK":
-      const { id, status } = action.payload;
-      const task = state.tasks.find((t) => t.id === id);
+    case "EDIT_TASK_SUCCEEDED":
       return {
-        tasks: [
-          ...state.tasks.filter((t) => t.id !== id),
-          { ...task, status: status },
-        ],
+        ...state,
+        isLoading: false,
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.payload.id) {
+            return action.payload;
+          }
+          return task;
+        }),
       };
     default:
       return state;

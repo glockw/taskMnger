@@ -4,12 +4,12 @@
       "id": 3,
       "title": "Create Facebook for dogs",
       "description": "The hottest new social network",
-      "status": "In Progress"
+      "status": "Completed"
     },
     {
       "title": "rita ",
       "description": "indiana",
-      "status": "Completed",
+      "status": "In Progress",
       "id": 4
     },
     {
@@ -17,6 +17,36 @@
       "description": "este si",
       "status": "Completed",
       "id": 5
+    },
+    {
+      "title": "el mejor ",
+      "description": "y ya tu lo sabe",
+      "status": "In Progress",
+      "id": 6
+    },
+    {
+      "title": "siempre",
+      "description": "sere",
+      "status": "In Progress",
+      "id": 7
+    },
+    {
+      "title": "remolach",
+      "description": ".net",
+      "status": "Completed",
+      "id": 8
+    },
+    {
+      "title": "el pepe",
+      "description": "pepe",
+      "status": "Unstarted",
+      "id": 9
+    },
+    {
+      "title": "el maco",
+      "description": "penpen",
+      "status": "In Progress",
+      "id": 10
     }
   ]
 }

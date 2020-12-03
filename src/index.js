@@ -1,16 +1,26 @@
 /* eslint-disable no-undef */
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import tasks from "./reducers";
-import thunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-
-const store = createStore(tasks, composeWithDevTools(applyMiddleware(thunk)));
+import thunk from "redux-thunk";
+import App from "./App";
+import "./index.css";
+import analytics from "./middleware";
+import apiMiddleware from "./middleware/api";
+import logger from "./middleware/logger";
+import tasksReducer from "./reducers";
+import reportWebVitals from "./reportWebVitals";
+const rootReducer = (state = {}, action) => {
+  return {
+    tasks: tasksReducer(state.tasks, action),
+  };
+};
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk, logger, analytics, apiMiddleware))
+);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

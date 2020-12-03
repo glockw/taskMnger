@@ -1,79 +1,44 @@
-import * as api from "../api";
-let _id = 0;
-export function uniqueId() {
-  return _id++;
-}
+import { CALL_API } from "../middleware/api";
 
-// export const createTask = ({ title, description }) => {
-//   return {
-//     type: "CREATE_TASK",
-//     payload: {
-//       id: uniqueId(),
-//       title,
-//       description,
-//       status: "Unstarted",
-//     },
-//   };
-// };
-
-export const updateTask = ({ id, status }) => {
-  return {
-    type: "UPDATE_TASK",
-    payload: {
-      id,
-      status,
-    },
-  };
-};
-
-export function fetchTasksSucceeded(tasks) {
-  return {
-    type: "FETCH_TASKS_SUCCEEDED",
-    payload: {
-      tasks,
-    },
-  };
-}
+export const FETCH_TASKS_STARTED = "FETCH_TASKS_STARTED";
+export const FETCH_TASKS_SUCCEEDED = "FETCH_TASKS_SUCCEEDED";
+export const FETCH_TASKS_FAILED = "FETCH_TASKS_FAILED";
 
 export function fetchTasks() {
-  return (dispatch) => {
-    api.fetchTasks().then((resp) => {
-      dispatch(fetchTasksSucceeded(resp.data));
-    });
-  };
-}
-
-function createTaskSucceeded(task) {
   return {
-    type: "CREATE_TASK_SUCCEEDED",
-    payload: {
-      task,
+    [CALL_API]: {
+      types: [FETCH_TASKS_STARTED, FETCH_TASKS_SUCCEEDED, FETCH_TASKS_FAILED],
+      endpoint: "/tasks",
     },
   };
 }
+
+export const CREATE_TASK_STARTED = "CREATE_TASK_STARTED";
+export const CREATE_TASK_SUCCEEDED = "CREATE_TASK_SUCCEEDED";
+export const CREATE_TASK_FAILED = "CREATE_TASK_FAILED";
 
 export function createTask({ title, description, status = "Unstarted" }) {
-  return (dispatch) => {
-    api.createTask({ title, description, status }).then((resp) => {
-      dispatch(createTaskSucceeded(resp.data));
-    });
-  };
-}
-
-export function editTaskSucceeded(task) {
   return {
-    type: "EDIT_TASK_SUCCEEDED",
-    payload: {
-      task,
+    [CALL_API]: {
+      types: [CREATE_TASK_STARTED, CREATE_TASK_SUCCEEDED, CREATE_TASK_FAILED],
+      method: "post",
+      body: { title, description, status },
+      endpoint: "/tasks",
     },
   };
 }
+
+export const EDIT_TASK_STARTED = "EDIT_TASK_STARTED";
+export const EDIT_TASK_SUCCEEDED = "EDIT_TASK_SUCCEEDED";
+export const EDIT_TASK_FAILED = "EDIT_TASK_FAILED";
+
 export function editTask(id, params) {
-  return (dispatch, getstate) => {
-    const task = getstate().tasks.find((task) => task.id == id);
-    const updatedTask = Object.assign({}, task, params);
-    api.editTask(id, updatedTask).then((resp) => {
-      dispatch(editTaskSucceeded(resp.data));
-    });
+  return {
+    [CALL_API]: {
+      types: [EDIT_TASK_STARTED, EDIT_TASK_SUCCEEDED, EDIT_TASK_FAILED],
+      method: "put",
+      endpoint: `tasks/${id}`,
+      body: { params },
+    },
   };
 }

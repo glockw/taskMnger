@@ -4,13 +4,18 @@ html {
   background-color: #777;
 }
 
+.loading {
+  color: goldenrod;
+  font-size: 3rem;
+  text-align: center;
+}
+
 .main-content {
   margin: 10 auto;
   padding: 10rem;
 }
 
 .task-lists {
-
   display: flex;
   justify-content: space-around;
 }
